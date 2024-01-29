@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OneExceriseActivity</string>
+    <string name="title">Nhập tiêu đề</string>
+    <string name="content">Nội dung</string>
+</resources>
