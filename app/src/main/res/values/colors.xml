@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_primary_app1">#F79425</color>
+    <color name="color_notes_item">#989592</color>
 </resources>

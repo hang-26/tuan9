@@ -22,7 +22,7 @@ class AddNotesActivity : AppCompatActivity() {
     }
 
     fun setEvent() {
-        binding.btSave.setOnClickListener {
+        binding.ivBtSave.setOnClickListener {
             var title = binding.etTitle.text.toString()
             var contentNote = binding.etContent.text.toString()
             // Lấy timestamp cho thời gian hiện tại

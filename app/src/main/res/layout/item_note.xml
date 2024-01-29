@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_notes_item"
+    android:layout_marginVertical="@dimen/dp8"
+    android:padding="@dimen/dp8"
+>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginVertical="@dimen/dp8"
+        android:text="Tiêu đề"
+        android:textSize="@dimen/sp20"
+        />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:layout_marginVertical="@dimen/dp8"
+        android:text="Nội dung"
+        android:textSize="@dimen/sp16"
+        />
+    <TextView
+        android:id="@+id/tv_notes_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_content"
+        android:layout_marginVertical="@dimen/dp8"
+        android:text="Thời gian"
+        android:textSize="@dimen/sp16"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
@@ -35,6 +36,28 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUM_DATE, note.editTime)
         }
         db.insert(TABLE_NAME, null, values)
+        Log.d("sql", "tên bảng: $TABLE_NAME ")
+        Log.d("sql", "tên tiêu đề: $COLUM_TITLE ${note.title} ")
         db.close()
     }
+
+    fun getAll(): MutableList<NoteData> {
+        val notesList: MutableList<NoteData> = mutableListOf()
+        val notes = "SELECT * FROM $TABLE_NAME"
+        val noteData = readableDatabase
+        val noteQuery = noteData.rawQuery(notes, null)
+        while (noteQuery.moveToNext()) {
+            val  id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
+            val  noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUM_TITLE))
+            val noteContent = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUM_CONTENT))
+            val  noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            notesList.add(notes)
+        }
+
+        noteQuery.close()
+        noteData.close()
+        return notesList
+    }
+
 }

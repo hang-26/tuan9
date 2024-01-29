@@ -10,7 +10,7 @@ import java.time.DateTimeException
 @Entity
 data class NoteData (
     //Khóa chính được cập nhật tự động
-    @PrimaryKey (autoGenerate = true) val id: Int = 0,
+    val id: Int = 0,
     var title: String = " ",
     var content: String = " ",
     var editTime: Long = 0
