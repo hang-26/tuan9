@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_primary_app1">#F79425</color>
     <color name="color_notes_item">#989592</color>
+    <color name="color_edit_notes">#FDA349</color>
 </resources>

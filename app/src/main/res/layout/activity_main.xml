@@ -55,5 +55,15 @@
         android:layout_marginHorizontal="@dimen/dp16"
         android:src="@drawable/ic_bt_add"
         />
+    <TextView
+        android:id="@+id/iv_bt_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginVertical="@dimen/dp16"
+        android:text="Xóa"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

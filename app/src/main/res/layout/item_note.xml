@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/custom_notes_item"
     android:layout_marginVertical="@dimen/dp8"
+    android:elevation="@dimen/dp10"
     android:padding="@dimen/dp8"
 >
     <TextView
@@ -27,6 +28,17 @@
         android:layout_marginVertical="@dimen/dp8"
         android:text="Nội dung"
         android:textSize="@dimen/sp16"
+        />
+    <ImageView
+        android:id="@+id/iv_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_content"
+        app:layout_constraintEnd_toEndOf="@id/tv_content"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginVertical="8dp"
+        android:src="@drawable/ic_delete"
         />
     <TextView
         android:id="@+id/tv_notes_time"
