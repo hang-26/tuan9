@@ -14,7 +14,7 @@ data class NoteData (
     var title: String = " ",
     var content: String = " ",
     var editTime: Long = 0,
-//    var isChecked: Boolean = false
+    var isChecked: Boolean = false
         )
 {
 }

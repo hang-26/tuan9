@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,15 +20,19 @@ class MainActivity:  AppCompatActivity() {
     lateinit var notesDataHelper: NotesDataHelper
     lateinit var notesAdapter: ItemNotesAdapter
     var isDelete = false
+
     private val startActivityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK){
-//            val e: String? = it.data?.getStringExtra("result")
+            noteList = notesDataHelper.getAll()
+            notesAdapter.refreshData(noteList)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         notesDataHelper = NotesDataHelper(this)
         setNoteItem()
@@ -36,6 +42,31 @@ class MainActivity:  AppCompatActivity() {
          binding.ivButtonAdd.setOnClickListener {
              val intent: Intent = Intent(this, AddNotesActivity::class.java)
              startActivityForResult.launch(intent)
+             notesAdapter.refreshData(noteList)
+         }
+
+         binding.etSearch.addTextChangedListener(object : TextWatcher {
+             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+             }
+
+             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+             }
+
+             override fun afterTextChanged(s: Editable?) {
+                 val text = s.toString()
+                 notesAdapter.searchNotes(text)
+             }
+
+         })
+
+         binding.ivOption.setOnClickListener {
+
+         }
+
+         binding.ivBtDelete.setOnClickListener {
+             notesAdapter.deleteSelectItems()
          }
      }
 
@@ -50,13 +81,12 @@ class MainActivity:  AppCompatActivity() {
             override fun onClick(position: Int) {
                 super.onClick(position)
                 setOnClickNote(position)
-                noteList = notesDataHelper.getAll()
-                notesAdapter.listNotes = noteList
                 notesAdapter.notifyDataSetChanged()
             }
 
             override fun onLongClick(position: Int) {
                 super.onLongClick(position)
+                binding.ivBtDelete.visibility = View.VISIBLE
             }
 
         })
@@ -71,7 +101,6 @@ class MainActivity:  AppCompatActivity() {
         intent.putExtra("title",  noteList[position].title)
         intent.putExtra("content", noteList[position].content)
         startActivityForResult.launch(intent)
-        setNoteItem()
     }
 
 

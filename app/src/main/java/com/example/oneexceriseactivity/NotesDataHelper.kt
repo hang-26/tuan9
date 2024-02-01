@@ -62,6 +62,24 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return notesList
     }
 
+    fun searchNotes(text: String): MutableList<NoteData> {
+        val noteList: MutableList<NoteData> = mutableListOf()
+        val notes = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_TITLE = $text OR $COLUMN_CONTENT = $text"
+        val noteData = readableDatabase
+        val noteQuery = noteData.rawQuery(notes, null)
+        while (noteQuery.moveToNext()) {
+            val  id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
+            val  noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val  noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            noteList.add(notes)
+        }
+        noteQuery.close()
+        noteData.close()
+        return noteList
+    }
+
     fun updateNote(note: NoteData) {
         val noteData = writableDatabase
         val noteValues = ContentValues().apply {
@@ -108,6 +126,8 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
             whereArgs)
         noteData.close()
     }
+
+
 
 
 }

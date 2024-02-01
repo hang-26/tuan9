@@ -1,5 +1,6 @@
 package com.example.oneexceriseactivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,7 @@ class EditNotesActivity : AppCompatActivity() {
             var newContent = binding.etContent.text.toString()
             notesDataHelper.editNote(newTitle, newContent, noteId)
             notesDataHelper.getAll()
+            setResult(RESULT_OK)
             finish()
     }
 }

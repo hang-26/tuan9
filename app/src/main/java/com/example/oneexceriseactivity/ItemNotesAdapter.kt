@@ -22,6 +22,7 @@ class ItemNotesAdapter(
     RecyclerView.Adapter<ItemNotesAdapter.ViewHolder>()
 {
     lateinit var binding: ItemNoteBinding
+    var searchList = listNotes
     var isEnable = false
     var isSelected = false
     private val noteData: NotesDataHelper = NotesDataHelper(context)
@@ -32,11 +33,11 @@ class ItemNotesAdapter(
 }
 
     override fun getItemCount(): Int {
-        return listNotes.size
+        return searchList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val noteList = listNotes[holder.adapterPosition]
+        val noteList = searchList[holder.adapterPosition]
         val binding = holder.binding
         binding.tvTitle.text = noteList.title
         binding.tvContent.text = noteList.content
@@ -46,6 +47,20 @@ class ItemNotesAdapter(
         val noteDate = dateFormat.format(date)
         binding.tvNotesTime.text = noteDate.toString()
 
+        if (isEnable == false) {
+            binding.ivCheck.visibility = View.GONE
+        } else {
+            binding.ivCheck.visibility = View.VISIBLE
+            binding.ivCheck.isChecked = isSelected
+            binding.ivCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    noteList.isChecked = true
+                    val id = noteList.id
+                }
+            }
+
+        }
+
         holder.itemView.setOnClickListener {
             notesInterface.onClick(holder.adapterPosition)
             notifyItemChanged(holder.adapterPosition)
@@ -54,14 +69,18 @@ class ItemNotesAdapter(
 
         holder.itemView.setOnLongClickListener {
             notesInterface.onLongClick(holder.adapterPosition)
-
+//            binding.ivCheck.visibility = View.VISIBLE
+            isEnable = true
+            notifyDataSetChanged()
             true
         }
-
-        binding.ivCheck.setOnClickListener {
-            noteData.deleteNote(noteList.id)
-            refreshData(noteData.getAll())
-        }
+        /**
+         * Xóa item notes
+         */
+//        binding.ivCheck.setOnClickListener {
+//            noteData.deleteNote(noteList.id)
+//            refreshData(noteData.getAll())
+//        }
     }
 
     class ViewHolder(val binding: ItemNoteBinding):
@@ -74,4 +93,36 @@ class ItemNotesAdapter(
         listNotes = newNotes
         notifyDataSetChanged()
     }
+
+
+    fun deleteSelectItems() {
+        var selectList: MutableList<Int> = mutableListOf()
+        listNotes.removeIf { it.isChecked == true }
+        for (i in 0 until  listNotes.size) {
+            if (listNotes[i].isChecked == true) {
+                selectList.add(listNotes[i].id)
+            }
+        }
+        for (position in selectList) {
+            noteData.deleteNote(position)
+            Log.d("sql", "deleteSelectItems: $position")
+        }
+        refreshData(listNotes)
+    }
+
+    fun searchNotes(text : String) {
+
+        var textSearch: String = text.toLowerCase()
+        if (text.isEmpty()) {
+            searchList = listNotes
+        } else {
+            searchList = listNotes.filter {
+                it.title.toLowerCase().contains(textSearch)
+                it.content.toLowerCase().contains(textSearch)
+            }.toMutableList()
+        }
+        notifyDataSetChanged()
+
+    }
+
 }

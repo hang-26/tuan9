@@ -2,8 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/it_delete"
-        android:title="Delete"
+        android:id="@+id/edit_new"
+        android:title="Thay đổi theo thời gian gần nhất"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/edit_old"
+        android:title="Thay đổi theo thời gian cũ nhất"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="always">
+
+    </item>
+    <item
+        android:id="@+id/create_new"
+        android:title="Thời gian tạo theo thời gian gần nhất"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="always">
+
+    </item>
+    <item
+        android:id="@+id/create_old"
+        android:title="Thay đổi theo thời gian gần nhất"
         android:icon="@drawable/ic_delete"
         app:showAsAction="always">
 

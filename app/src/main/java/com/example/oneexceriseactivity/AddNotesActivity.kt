@@ -29,6 +29,8 @@ class AddNotesActivity : AppCompatActivity() {
             val timeNotes = System.currentTimeMillis()
             val note = NoteData(0, title, contentNote, timeNotes)
             db.insertNotes(note)
+            db.getAll()
+            setResult(RESULT_OK)
             finish()
             Toast.makeText(this, " Ghi chú đã được thêm thành công ", Toast.LENGTH_SHORT).show()
         }
