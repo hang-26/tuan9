@@ -86,7 +86,7 @@ class MainActivity:  AppCompatActivity() {
             binding.ivBtDelete.visibility = View.VISIBLE
         }
         noteList = notesDataHelper.getAll()
-        notesAdapter = ItemNotesAdapter(noteList, this, object : NotesInterface {
+        notesAdapter = ItemNotesAdapter(this, noteList,  object : NotesInterface {
             override fun onClick(position: Int) {
                 super.onClick(position)
                 setOnClickNote(position)

@@ -16,8 +16,8 @@ import java.util.Locale
 import kotlin.coroutines.coroutineContext
 
 class ItemNotesAdapter(
-    var listNotes: MutableList<NoteData>,
     context: Context,
+    var listNotes: MutableList<NoteData>,
     val notesInterface: NotesInterface) :
     RecyclerView.Adapter<ItemNotesAdapter.ViewHolder>()
 {

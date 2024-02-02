@@ -4,17 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 
 class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private  const val  DATABASE_NAME = "notesapp.db"
-        private  const val  DATABASE_VERSION = 1
-        private  const val  TABLE_NAME = "allnotes"
-        private  const val  COLUM_ID = "id"
-        private  const val  COLUMN_TITLE = "title"
-        private  const val  COLUMN_CONTENT = "content"
-        private  const val  COLUM_DATE = "date"
+        private const val DATABASE_NAME = "notesapp.db"
+        private const val DATABASE_VERSION = 1
+        private const val TABLE_NAME = "allnotes"
+        private const val COLUM_ID = "id"
+        private const val COLUMN_TITLE = "title"
+        private const val COLUMN_CONTENT = "content"
+        private const val COLUM_DATE = "date"
 
         // Singleton instance
         // Khi một biến được đánh dấu là @Volatile,
@@ -61,19 +60,18 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
     fun getAll(): MutableList<NoteData> {
         val notesList: MutableList<NoteData> = mutableListOf()
-        val notes = "SELECT * FROM $TABLE_NAME"
+        val notesQuery = "SELECT * FROM $TABLE_NAME"
         val noteData = readableDatabase
-        val noteQuery = noteData.rawQuery(notes, null)
-        while (noteQuery.moveToNext()) {
-            val  id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
-            val  noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_TITLE))
-            val noteContent = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_CONTENT))
-            val  noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
+        val notesCursor = noteData.rawQuery(notesQuery, null)
+        while (notesCursor.moveToNext()) {
+            val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
             val notes = NoteData(id, noteTitle, noteContent,noteTime)
             notesList.add(notes)
         }
-
-        noteQuery.close()
+        notesCursor.close()
         noteData.close()
         return notesList
     }
@@ -84,10 +82,10 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         val noteData = readableDatabase
         val noteQuery = noteData.rawQuery(notes, null)
         while (noteQuery.moveToNext()) {
-            val  id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
-            val  noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_TITLE))
+            val id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_TITLE))
             val noteContent = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_CONTENT))
-            val  noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
+            val noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
             val notes = NoteData(id, noteTitle, noteContent,noteTime)
             noteList.add(notes)
         }
