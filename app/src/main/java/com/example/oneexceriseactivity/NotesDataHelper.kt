@@ -15,10 +15,28 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         private  const val  COLUMN_TITLE = "title"
         private  const val  COLUMN_CONTENT = "content"
         private  const val  COLUM_DATE = "date"
+
+        // Singleton instance
+        // Khi một biến được đánh dấu là @Volatile,
+        // nó đảm bảo rằng tất cả các luồng đều nhìn thấy giá trị mới nhất của biến khi nó được cập nhật.
+        @Volatile
+        private var instance: NotesDataHelper? = null
+
+        @Synchronized
+        fun getInstance(context: Context): NotesDataHelper {
+            if (instance == null) {
+                instance = NotesDataHelper(context.applicationContext)
+            }
+            return instance!!
+        }
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUM_ID INTEGER PRIMARY KEY AUTOINCREMENT,  $COLUMN_TITLE TEXT, $COLUMN_CONTENT TEXT, $COLUM_DATE LONG)"
+        val createTableQuery = "CREATE TABLE $TABLE_NAME (" +
+                "$COLUM_ID INTEGER PRIMARY KEY AUTOINCREMENT,  " +
+                "$COLUMN_TITLE TEXT," +
+                " $COLUMN_CONTENT TEXT, " +
+                "$COLUM_DATE LONG)"
         db?.execSQL(createTableQuery)
     }
 
@@ -38,8 +56,6 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
         }
         db.insert(TABLE_NAME, null, values)
-        Log.d("sql", "tên bảng: $TABLE_NAME ")
-        Log.d("sql", "tên tiêu đề: $COLUMN_TITLE ${note.title} ")
         db.close()
     }
 
@@ -80,22 +96,22 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return noteList
     }
 
-    fun updateNote(note: NoteData) {
-        val noteData = writableDatabase
-        val noteValues = ContentValues().apply {
-            put(COLUMN_TITLE, note.title)
-            put(COLUMN_CONTENT, note.content)
-        }
-
-        val noteId = "${COLUM_ID} = ?"
-        val selectionArgs = arrayOf(note.id.toString())
-        noteData.update(
-            TABLE_NAME,
-            noteValues,
-            noteId,
-            selectionArgs)
-        noteData.close()
-    }
+//    fun updateNote(note: NoteData) {
+//        val noteData = writableDatabase
+//        val noteValues = ContentValues().apply {
+//            put(COLUMN_TITLE, note.title)
+//            put(COLUMN_CONTENT, note.content)
+//        }
+//
+//        val noteId = "${COLUM_ID} = ?"
+//        val selectionArgs = arrayOf(note.id.toString())
+//        noteData.update(
+//            TABLE_NAME,
+//            noteValues,
+//            noteId,
+//            selectionArgs)
+//        noteData.close()
+//    }
 
     fun editNote(title: String, content: String, id: Int) {
         val noteData = writableDatabase
@@ -128,6 +144,25 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     }
 
 
+ fun readNotesItem() {
+     val db = readableDatabase
 
+     val projection = arrayOf(COLUM_ID, COLUMN_TITLE, COLUMN_CONTENT)
+
+     val selection = "${COLUMN_TITLE} = ?"
+     val selectionArgs = arrayOf("My Title")
+
+     val sortOrder = "${COLUM_ID} DESC"
+
+     db.query(
+         TABLE_NAME,   // The table to query
+         projection,             // The array of columns to return (pass null to get all)
+         selection,              // The columns for the WHERE clause
+         selectionArgs,          // The values for the WHERE clause
+         null,                   // don't group the rows
+         null,                   // don't filter by row groups
+         sortOrder               // The sort order
+     )
+ }
 
 }

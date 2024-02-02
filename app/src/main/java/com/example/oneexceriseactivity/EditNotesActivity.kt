@@ -42,11 +42,11 @@ class EditNotesActivity : AppCompatActivity() {
             return
         }
 
-            var newTitle = binding.etTitle.text.toString()
-            var newContent = binding.etContent.text.toString()
-            notesDataHelper.editNote(newTitle, newContent, noteId)
-            notesDataHelper.getAll()
-            setResult(RESULT_OK)
-            finish()
+        var newTitle = binding.etTitle.text.toString()
+        var newContent = binding.etContent.text.toString()
+        notesDataHelper.editNote(newTitle, newContent, noteId)
+
+        setResult(RESULT_OK)
+        finish()
     }
 }

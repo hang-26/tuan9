@@ -63,13 +63,11 @@ class ItemNotesAdapter(
 
         holder.itemView.setOnClickListener {
             notesInterface.onClick(holder.adapterPosition)
-            notifyItemChanged(holder.adapterPosition)
-            notifyDataSetChanged()
+
         }
 
         holder.itemView.setOnLongClickListener {
             notesInterface.onLongClick(holder.adapterPosition)
-//            binding.ivCheck.visibility = View.VISIBLE
             isEnable = true
             notifyDataSetChanged()
             true
@@ -91,15 +89,15 @@ class ItemNotesAdapter(
 
     fun refreshData(newNotes: MutableList<NoteData>) {
         listNotes = newNotes
+        searchList = listNotes
         notifyDataSetChanged()
     }
 
 
     fun deleteSelectItems() {
         var selectList: MutableList<Int> = mutableListOf()
-        listNotes.removeIf { it.isChecked == true }
         for (i in 0 until  listNotes.size) {
-            if (listNotes[i].isChecked == true) {
+            if (searchList[i].isChecked == true) {
                 selectList.add(listNotes[i].id)
             }
         }
@@ -107,7 +105,8 @@ class ItemNotesAdapter(
             noteData.deleteNote(position)
             Log.d("sql", "deleteSelectItems: $position")
         }
-        refreshData(listNotes)
+        refreshData(noteData.getAll())
+//        listNotes.removeIf { it.isChecked == true }
     }
 
     fun searchNotes(text : String) {
@@ -124,5 +123,32 @@ class ItemNotesAdapter(
         notifyDataSetChanged()
 
     }
+
+
+    fun sortListOld() {
+        listNotes.sortBy { it.editTime }
+        searchList = listNotes
+        notifyDataSetChanged()
+    }
+
+    fun sortListNew() {
+        listNotes.sortWith(compareByDescending { it.editTime })
+        searchList = listNotes
+        notifyDataSetChanged()
+    }
+
+    fun sortListZA() {
+        listNotes.sortWith(compareBy { it.title })
+        searchList = listNotes
+        notifyDataSetChanged()
+    }
+
+    fun sortListAZ() {
+        listNotes.sortWith(compareByDescending { it.title })
+        searchList = listNotes
+        notifyDataSetChanged()
+    }
+
+
 
 }
