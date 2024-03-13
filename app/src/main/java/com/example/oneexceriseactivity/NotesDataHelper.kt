@@ -76,23 +76,7 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return notesList
     }
 
-    fun searchNotes(text: String): MutableList<NoteData> {
-        val noteList: MutableList<NoteData> = mutableListOf()
-        val notes = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_TITLE = $text OR $COLUMN_CONTENT = $text"
-        val noteData = readableDatabase
-        val noteQuery = noteData.rawQuery(notes, null)
-        while (noteQuery.moveToNext()) {
-            val id = noteQuery.getInt(noteQuery.getColumnIndexOrThrow(COLUM_ID))
-            val noteTitle = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_TITLE))
-            val noteContent = noteQuery.getString(noteQuery.getColumnIndexOrThrow(COLUMN_CONTENT))
-            val noteTime = noteQuery.getLong(noteQuery.getColumnIndexOrThrow(COLUM_DATE))
-            val notes = NoteData(id, noteTitle, noteContent,noteTime)
-            noteList.add(notes)
-        }
-        noteQuery.close()
-        noteData.close()
-        return noteList
-    }
+
 
 //    fun updateNote(note: NoteData) {
 //        val noteData = writableDatabase
@@ -142,25 +126,99 @@ class NotesDataHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     }
 
 
- fun readNotesItem() {
-     val db = readableDatabase
+     fun getTimeOld(): MutableList<NoteData> {
+         val notesList: MutableList<NoteData> = mutableListOf()
+         val notesQuery = "SELECT * FROM $TABLE_NAME ORDER BY $COLUM_DATE ASC "
+         val noteData = readableDatabase
+         val notesCursor = noteData.rawQuery(notesQuery, null)
+         while (notesCursor.moveToNext()) {
+             val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+             val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+             val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+             val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
+             val notes = NoteData(id, noteTitle, noteContent,noteTime)
+             notesList.add(notes)
+         }
+         notesCursor.close()
+         noteData.close()
+         return notesList
+     }
 
-     val projection = arrayOf(COLUM_ID, COLUMN_TITLE, COLUMN_CONTENT)
+    fun getTimeNew(): MutableList<NoteData> {
+        val notesList: MutableList<NoteData> = mutableListOf()
+        val notesQuery = "SELECT * FROM $TABLE_NAME ORDER BY $COLUM_DATE DESC "
+        val noteData = readableDatabase
+        val notesCursor = noteData.rawQuery(notesQuery, null)
+        while (notesCursor.moveToNext()) {
+            val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            notesList.add(notes)
+        }
+        notesCursor.close()
+        noteData.close()
+        return notesList
+    }
 
-     val selection = "${COLUMN_TITLE} = ?"
-     val selectionArgs = arrayOf("My Title")
+    fun getDataAZ(): MutableList<NoteData> {
+        val notesList: MutableList<NoteData> = mutableListOf()
+        val notesQuery = "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_TITLE ASC "
+        val noteData = readableDatabase
+        val notesCursor = noteData.rawQuery(notesQuery, null)
+        while (notesCursor.moveToNext()) {
+            val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            notesList.add(notes)
+        }
+        notesCursor.close()
+        noteData.close()
+        return notesList
+    }
 
-     val sortOrder = "${COLUM_ID} DESC"
+    fun getTitleZA(): MutableList<NoteData> {
+        val notesList: MutableList<NoteData> = mutableListOf()
+        val notesQuery = "SELECT * FROM $TABLE_NAME ORDER BY $COLUM_DATE DESC "
+        val noteData = readableDatabase
+        val notesCursor = noteData.rawQuery(notesQuery, null)
+        while (notesCursor.moveToNext()) {
+            val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            notesList.add(notes)
+        }
+        notesCursor.close()
+        noteData.close()
+        return notesList
+    }
 
-     db.query(
-         TABLE_NAME,   // The table to query
-         projection,             // The array of columns to return (pass null to get all)
-         selection,              // The columns for the WHERE clause
-         selectionArgs,          // The values for the WHERE clause
-         null,                   // don't group the rows
-         null,                   // don't filter by row groups
-         sortOrder               // The sort order
-     )
- }
+
+    fun getTitle(tittle: String): MutableList<NoteData> {
+
+        val notesList: MutableList<NoteData> = mutableListOf()
+        val noteQuery ="SELECT *FROM $TABLE_NAME WHERE $COLUMN_TITLE LIKE %$tittle% "
+        val noteData = readableDatabase
+        val notesCursor = noteData.rawQuery(noteQuery, null)
+        while (notesCursor.moveToNext()) {
+            val id = notesCursor.getInt(notesCursor.getColumnIndexOrThrow(COLUM_ID))
+            val noteTitle = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val noteContent = notesCursor.getString(notesCursor.getColumnIndexOrThrow(COLUMN_CONTENT))
+            val noteTime = notesCursor.getLong(notesCursor.getColumnIndexOrThrow(COLUM_DATE))
+            val notes = NoteData(id, noteTitle, noteContent,noteTime)
+            notesList.add(notes)
+        }
+        notesCursor.close()
+        noteData.close()
+        return notesList
+
+    }
+
+    
 
 }

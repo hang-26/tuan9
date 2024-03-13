@@ -116,8 +116,7 @@ class ItemNotesAdapter(
             searchList = listNotes
         } else {
             searchList = listNotes.filter {
-                it.title.toLowerCase().contains(textSearch)
-                it.content.toLowerCase().contains(textSearch)
+                (it.title.toLowerCase().contains(textSearch))
             }.toMutableList()
         }
         notifyDataSetChanged()

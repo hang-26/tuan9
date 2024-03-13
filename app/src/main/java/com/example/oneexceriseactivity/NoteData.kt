@@ -7,7 +7,6 @@ import java.time.DateTimeException
 /**
  * Xác định dữ liệu bằng thực thể
  */
-@Entity
 data class NoteData (
     //Khóa chính được cập nhật tự động
     val id: Int = 0,

@@ -124,22 +124,26 @@ class MainActivity:  AppCompatActivity() {
                     0 -> {
                         indexSelect = 0
                         Toast.makeText(this,"Sắp xếp theo thời gian gần nhất", Toast.LENGTH_SHORT).show()
-                        notesAdapter.sortListNew()
+                        noteList = notesDataHelper.getTimeNew()
+                        notesAdapter.refreshData(noteList)
                     }
                     1 -> {
                         indexSelect = 1
                         Toast.makeText(this,"Sắp xếp theo thời gian gần nhất", Toast.LENGTH_SHORT).show()
-                        notesAdapter.sortListOld()
+                        noteList = notesDataHelper.getTimeOld()
+                        notesAdapter.refreshData(noteList)
                     }
                     2 -> {
                         indexSelect = 2
                         Toast.makeText(this,"Sắp xếp theo A -Z", Toast.LENGTH_SHORT).show()
-                        notesAdapter.sortListAZ()
+                        noteList = notesDataHelper.getDataAZ()
+                        notesAdapter.refreshData(noteList)
                     }
                     3 -> {
                         indexSelect = 3
                         Toast.makeText(this,"Sắp xếp theo Z- A", Toast.LENGTH_SHORT).show()
-                        notesAdapter.sortListZA()
+                        noteList = notesDataHelper.getTitleZA()
+                        notesAdapter.refreshData(noteList)
                     }
                 }
                 dialog.dismiss()  // Đóng dialog sau khi xử lý
